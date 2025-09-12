@@ -8414,7 +8414,9 @@ impl LspStore {
                     &inlay_hints,
                     query_start..query_end,
                     &mut cx,
-                );
+                )
+                .await
+                .context("preparing inlay hints request")?;
                 Self::query_lsp_locally::<InlayHints>(
                     lsp_store,
                     sender_id,
@@ -8423,7 +8425,8 @@ impl LspStore {
                     None,
                     &mut cx,
                 )
-                .await?
+                .await
+                .context("querying for inlay hints")?
             }
         }
         Ok(proto::Ack {})
